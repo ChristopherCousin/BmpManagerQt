@@ -82,6 +82,10 @@ void MainWindow::on_pushButton_4_clicked()
     {
         on_pushButton_2_clicked();
     }
-    FileManager filemanager;
-    filemanager._MultiThreadToGreyColour(fileName.toStdString(), savePath.toStdString());
+    else if(fileName == ""){
+        on_pushButton_clicked();
+    } else {
+        FileManager filemanager;
+        filemanager._MultiThreadToGreyColour(fileName.toStdString(), savePath.toStdString());
+    }
 }

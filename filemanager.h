@@ -7,12 +7,14 @@
 #include <string.h>
 #include <math.h>
 #include <QString>
+#include <QtDebug>
 
 class FileManager
 {
 public:
     FileManager();
     void _ToGreyColour(std::string path, std::string savePath);
+    void _MultiThreadToGreyColour(std::string path, std::string savePath);
 };
 
 #endif // FILEMANAGER_H

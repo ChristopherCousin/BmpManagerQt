@@ -6,5 +6,7 @@
         <file>Resources/greyBMP.png</file>
         <file>Resources/iconfinder_menu-24_103174.png</file>
         <file>Resources/Shades02-1024x570@3x.jpg</file>
+        <file>Resources/multithread.png</file>
+        <file>Resources/iconfinder_needle_and_thread_296206.png</file>
     </qresource>
 </RCC>
