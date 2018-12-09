@@ -18,7 +18,7 @@ void MainWindow::on_pushButton_clicked()
 
     fileName = QFileDialog::getOpenFileName(
                 this, tr("Select your BMP File"),
-                "/home",
+                "",
                 tr("BMP Files (*.bmp)"));
 
     QMessageBox::information(this, ("Info"), fileName);
@@ -29,7 +29,7 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     savePath = QFileDialog::getSaveFileName(this,
-            tr("Set name of new BMP File"), "",
+            tr("Set name of new BMP File"), "_GreyColor",
             tr("Bmp File (*.bmp)"));
 
 
@@ -58,17 +58,13 @@ void MainWindow::on_GreyScale_2_clicked()
 
 void MainWindow::on_pushButton_6_clicked()
 {
-    fileName = QFileDialog::getOpenFileName(
-                this, tr("Select your BMP File"),
-                "/home",
-                tr("BMP Files (*.bmp)"));
+    on_pushButton_clicked();
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
-    savePath = QFileDialog::getSaveFileName(this,
-            tr("Set name of new BMP File"), "",
-            tr("Bmp File (*.bmp)"));
+
+    on_pushButton_2_clicked();
 
 }
 

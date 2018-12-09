@@ -81,9 +81,9 @@ void FileManager::_MultiThreadToGreyColour(string path, string savePath)
         in.seekg(0x0012);
         in.read((char *)&width, 4);
         in.read((char *)&height, 4);
-
+        
         //Ahora nos posicionamos de la tabla de colores
-        in.seekg(0x0040);
+        in.seekg(0x0036);
 
         //Mientras no llegue al final
         while (!in.eof()) {
