@@ -39,9 +39,6 @@ void FileManager::_ToGreyColour(string path, string savePath)
         in.seekg(0x0016);
         in.read((char *)&height, 4);
 
-        cout << "Height: " << height << endl;
-        cout << "Width: " << width << endl;
-
         //Ahora nos posicionamos de la tabla de colores
         in.seekg(0x0036);
 

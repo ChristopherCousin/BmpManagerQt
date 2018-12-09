@@ -1,2 +1,10 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>Resources/bmp.png</file>
+        <file>Resources/iconfinder_Open_1493293 (1).png</file>
+        <file>Resources/iconfinder_Close_1493281.png</file>
+        <file>Resources/greyBMP.png</file>
+        <file>Resources/iconfinder_menu-24_103174.png</file>
+        <file>Resources/Shades02-1024x570@3x.jpg</file>
+    </qresource>
+</RCC>
