@@ -79,16 +79,12 @@ void FileManager::_MultiThreadToGreyColour(string path, string savePath)
         //bmp 18 que es el width en pixeles de la imagen
         in.seekg(0x0012);
         in.read((char *)&width, 4);
-
-        //Ahora vamos a la posicion del height
-        in.seekg(0x0016);
         in.read((char *)&height, 4);
 
         //Ahora nos posicionamos de la tabla de colores
         in.seekg(0x0036);
 
-        width = width / 2;
-        qDebug() << width << height << &pixel;
+        qDebug() << width << height << sizeof(pixel);
         //Mientras no llegue al final
         while (!in.eof()) {
             in.read((char *)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)

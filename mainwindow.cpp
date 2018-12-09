@@ -62,8 +62,6 @@ void MainWindow::on_pushButton_6_clicked()
                 this, tr("Select your BMP File"),
                 "/home",
                 tr("BMP Files (*.bmp)"));
-
-    QMessageBox::information(this, ("Info"), fileName);
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -72,16 +70,31 @@ void MainWindow::on_pushButton_5_clicked()
             tr("Set name of new BMP File"), "",
             tr("Bmp File (*.bmp)"));
 
-
-    QMessageBox::information(this, ("Info"), savePath);
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    if(savePath == "")
+    if (fileName == "" && savePath == "")
     {
+        QMessageBox::information(this, ("Info"), "You must select first the BMP File!");
+        on_pushButton_clicked();
+        QMessageBox::information(this, ("Info"), "You must select where you'll save the BMP File!");
         on_pushButton_2_clicked();
+        if (fileName != "" && savePath != "")
+        {
+            filemanager._MultiThreadToGreyColour(fileName.toStdString(), savePath.toStdString());
+        }
     }
-    FileManager filemanager;
-    filemanager._MultiThreadToGreyColour(fileName.toStdString(), savePath.toStdString());
+    else if (fileName == "")
+    {
+        QMessageBox::information(this, ("Info"), "You must select first the BMP File!");
+        on_pushButton_clicked();
+    }
+    else if (savePath == "") {
+        QMessageBox::information(this, ("Info"), "You must select where you'll save the BMP File!");
+        on_pushButton_2_clicked();
+    } else {
+        filemanager._MultiThreadToGreyColour(fileName.toStdString(), savePath.toStdString());
+    }
+
 }

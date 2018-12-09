@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
-    <height>401</height>
+    <width>649</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -124,7 +124,7 @@
        <widget class="QPushButton" name="pushButton">
         <property name="geometry">
          <rect>
-          <x>380</x>
+          <x>460</x>
           <y>20</y>
           <width>151</width>
           <height>51</height>
@@ -153,8 +153,8 @@
        <widget class="QPushButton" name="pushButton_2">
         <property name="geometry">
          <rect>
-          <x>380</x>
-          <y>100</y>
+          <x>460</x>
+          <y>90</y>
           <width>151</width>
           <height>51</height>
          </rect>
@@ -182,8 +182,8 @@
        <widget class="QPushButton" name="pushButton_3">
         <property name="geometry">
          <rect>
-          <x>200</x>
-          <y>210</y>
+          <x>460</x>
+          <y>310</y>
           <width>151</width>
           <height>51</height>
          </rect>
@@ -225,13 +225,91 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>110</y>
+          <y>100</y>
           <width>371</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
          <string>Please set a name and a path for the new File:</string>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="textBrowser">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>256</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <property name="placeholderText">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>160</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Bmp Info</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lblHeight">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>260</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Height:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lblWidth">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>290</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Width:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lblHeight_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>190</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>File Path:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lblHeight_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>220</y>
+          <width>241</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save Path:</string>
         </property>
        </widget>
       </widget>

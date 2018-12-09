@@ -41,6 +41,7 @@ private:
     Ui::MainWindow *ui;
     QString fileName;
     QString savePath;
+    FileManager filemanager;
 };
 
 #endif // MAINWINDOW_H
