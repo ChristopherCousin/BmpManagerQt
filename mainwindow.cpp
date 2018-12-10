@@ -21,8 +21,6 @@ void MainWindow::on_pushButton_clicked()
                 "",
                 tr("BMP Files (*.bmp)"));
 
-    QMessageBox::information(this, ("Info"), fileName);
-
 }
 
 
@@ -32,18 +30,36 @@ void MainWindow::on_pushButton_2_clicked()
             tr("Set name of new BMP File"), "_GreyColor",
             tr("Bmp File (*.bmp)"));
 
-
-    QMessageBox::information(this, ("Info"), savePath);
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    if(savePath == "")
+    if (fileName == "" && savePath == "")
     {
+        QMessageBox::information(this, ("Info"), "You must select first the BMP File!");
+        on_pushButton_clicked();
+        QMessageBox::information(this, ("Info"), "You must select where you'll save the BMP File!");
         on_pushButton_2_clicked();
+        if (fileName != "" && savePath != "")
+        {
+            filemanager._ToGreyColour(fileName.toStdString(), savePath.toStdString());
+            std::string time = std::to_string(filemanager.timeToFinish);
+            ui->lblTimeToFinish->setText("Time in conversion in NanoSeconds: " + QString::fromStdString(time));
+        }
     }
-    FileManager filemanager;
-    //filemanager._ToGreyColour(fileName.toStdString(), savePath.toStdString());
+    else if (fileName == "")
+    {
+        QMessageBox::information(this, ("Info"), "You must select first the BMP File!");
+        on_pushButton_clicked();
+    }
+    else if (savePath == "") {
+        QMessageBox::information(this, ("Info"), "You must select where you'll save the BMP File!");
+        on_pushButton_2_clicked();
+    } else {
+        filemanager._ToGreyColour(fileName.toStdString(), savePath.toStdString());
+        std::string time = std::to_string(filemanager.timeToFinish);
+        ui->lblTimeToFinish->setText("Time in conversion in NanoSeconds: " + QString::fromStdString(time));
+    }
 }
 
 void MainWindow::on_GreyScale_clicked()

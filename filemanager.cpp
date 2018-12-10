@@ -9,6 +9,8 @@ FileManager::FileManager()
 
 void FileManager::_ToGreyColour(string path, string savePath)
 {
+    QElapsedTimer timer;
+    timer.start();
     struct rgb {
         unsigned char b, g, r;
     }
@@ -50,6 +52,7 @@ void FileManager::_ToGreyColour(string path, string savePath)
         }
         in.close();
         out.close();
+        timeToFinish = timer.elapsed();
 }
 
 void FileManager::_MultiThreadToGreyColour(string path, string savePath)
@@ -73,19 +76,20 @@ void FileManager::_MultiThreadToGreyColour(string path, string savePath)
         in.read((char *)&width, 4);
         in.read((char *)&height, 4);
         TotalPixel = width * height;
-        //Ahora nos posicionamos de la tabla de colores
 
+        //Calculo los pixeles de la imagen
         int idx = 0;
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
                     idx += 3;
                 }
             }
+
+            //la mitad
          Mitadidx = idx /2;
          //in.seekg(idx);
 
-         FileManager * taskPtr = new FileManager();
-         std::thread th(&FileManager::primeraParte, taskPtr, 0);
+
          primeraParte(1);
             in.close();
             out.close();
@@ -94,10 +98,10 @@ void FileManager::_MultiThreadToGreyColour(string path, string savePath)
 
 void FileManager::primeraParte(int num) {
     int e = 0;
-    //Mientras no llegue al final
 
-    // porque debugeas? va lento es este boton de
+    // p
     if(num==0) {
+        //Ahora nos posicionamos de la tabla de colores
         in.seekg(0x0036);
         while(in.tellg() >= 0x0036 && in.tellg() <= Mitadidx) {
             in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)

@@ -10,6 +10,7 @@
 #include <QtDebug>
 #include <thread>
 #include <future>
+#include <QElapsedTimer>
 
 class FileManager
 {
@@ -19,6 +20,7 @@ public:
     void _MultiThreadToGreyColour(std::string path, std::string savePath);
     void primeraParte(int num);
 
+    long long timeToFinish;
     int width = 0;
     int height = 0;
     int TotalPixel;
