@@ -43,7 +43,7 @@ void MainWindow::on_pushButton_3_clicked()
         on_pushButton_2_clicked();
     }
     FileManager filemanager;
-    filemanager._ToGreyColour(fileName.toStdString(), savePath.toStdString());
+    //filemanager._ToGreyColour(fileName.toStdString(), savePath.toStdString());
 }
 
 void MainWindow::on_GreyScale_clicked()
