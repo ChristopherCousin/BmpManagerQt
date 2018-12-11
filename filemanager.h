@@ -16,9 +16,13 @@ class FileManager
 {
 public:
     FileManager();
+    // funcion que usaremos para pasar a gris la imagen SIN multihilo
     void _ToGreyColour(std::string path, std::string savePath);
-    void _MultiThreadToGreyColour(std::string path, std::string savePath);
     void ToGrey(int num);
+
+    // funcion que usaremos para pasar a gris la imagen CON multihilo
+    void _MultiThreadToGreyColour(std::string path, std::string savePath);
+
     static void static_primeraParte(FileManager * instance)
             {
                 instance->ToGrey(0);
@@ -27,20 +31,28 @@ public:
             {
                 instance->ToGrey(1);
             }
+
+    //Variable long long para almacenar el tiempo de conversion
     long long timeToFinish;
+
     int width = 0;
     int height = 0;
+
+    //variable donde almacenaremos el total de pixeles del bmp
     int TotalPixel;
-    std::ifstream in; //BMP en color
-    std::ofstream out; //BMP blanco y negro
+    //Variable donde almacenaremos el total de pixeles / 2 para partir el trabajo en 2
+    int Mitadidx;
+
+
+    std::ifstream in;  // Input archivo
+    std::ofstream out; // El OutPut Archivo
+
+
+    //declaramos la clase rgb para establecer los colores a escala de grises
     struct rgb {
         unsigned char b, g, r;
     }
     pixel;
-
-    int idx;
-    int Mitadidx;
-    int e = 0;
 
 
 };
