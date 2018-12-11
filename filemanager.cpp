@@ -78,44 +78,38 @@ void FileManager::_MultiThreadToGreyColour(string path, string savePath)
         TotalPixel = width * height;
 
         //Calculo los pixeles de la imagen
-        int idx = 0;
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    idx += 3;
-                }
-            }
+        int offsets = TotalPixel * 3;
 
             //la mitad
-         Mitadidx = idx /2;
-         //in.seekg(idx);
+         Mitadidx = offsets /2;
 
-
-         primeraParte(1);
-            in.close();
-            out.close();
+        //primeraParte(0);
+         std::thread t1(static_primeraParte,this);
+         std::thread t2(static_primeraParte2,this);
+         t1.join();
+         t2.join();
+         in.close();
+         out.close();
 
 }
+void FileManager::ToGrey(int num) {
 
-void FileManager::primeraParte(int num) {
-    int e = 0;
-
-    // p
     if(num==0) {
         //Ahora nos posicionamos de la tabla de colores
         in.seekg(0x0036);
-        while(in.tellg() >= 0x0036 && in.tellg() <= Mitadidx) {
-            in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
+        while(in.tellg() >= 0x0036 && in.tellg() <= Mitadidx)
+        {
+           in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
            char grayColor = (pixel.b, pixel.g, pixel.r); //Establece el color en 8 bits
            out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
         }
-    }
-    else {
+    } else {
         in.seekg(Mitadidx);
         while (!in.eof()){
-            in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
+           in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
            char grayColor = (pixel.b, pixel.g, pixel.r); //Establece el color en 8 bits
            out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
         }
-    }
+    } // END If
 
 }

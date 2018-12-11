@@ -18,8 +18,15 @@ public:
     FileManager();
     void _ToGreyColour(std::string path, std::string savePath);
     void _MultiThreadToGreyColour(std::string path, std::string savePath);
-    void primeraParte(int num);
-
+    void ToGrey(int num);
+    static void static_primeraParte(FileManager * instance)
+            {
+                instance->ToGrey(0);
+            }
+    static void static_primeraParte2(FileManager * instance)
+            {
+                instance->ToGrey(1);
+            }
     long long timeToFinish;
     int width = 0;
     int height = 0;
