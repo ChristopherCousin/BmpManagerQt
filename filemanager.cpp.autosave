@@ -83,7 +83,7 @@ void FileManager::_MultiThreadToGreyColour(string path, string savePath)
             //la mitad
          Mitadidx = offsets /2;
 
-        //primeraParte(0);
+         //
          std::thread t1(static_primeraParte,this);
          std::thread t2(static_primeraParte2,this);
          t1.join();
@@ -100,17 +100,20 @@ void FileManager::ToGrey(int num) {
         in.seekg(0x0036);
         while(in.tellg() >= 0x0036 && in.tellg() <= Mitadidx)
         {
-           in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
+           in.read((char*)(&pixel), sizeof(pixel)); // Hacemos un read en el puntero que hemos indicado anteriormente con el puntero de pixel y
+                                                    // el tamaño a extraer en caracteres que es el sizeofpixel
+           
            char grayColor = (pixel.b, pixel.g, pixel.r); //Establece el color en 8 bits
            out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
         }
     } else {
-
+    
+        //ponemos la posicion del proximo caracter que es la mitad del total de pixeles.
         in.seekg(Mitadidx);
         while (!in.eof()){
-           in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
-           char grayColor = (pixel.b, pixel.g, pixel.r); //Establece el color en 8 bits
-           out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
+           in.read((char*)(&pixel), sizeof(pixel));
+           char grayColor = (pixel.b, pixel.g, pixel.r); 
+           out << grayColor << grayColor << grayColor; 
         }
     } // END If
 
