@@ -4,17 +4,11 @@ using namespace std;
 
 FileManager::FileManager()
 {
-
 }
 
 void FileManager::_ToGreyColour(string path, string savePath)
 {
-    QElapsedTimer timer;
     timer.start();
-    struct rgb {
-        unsigned char b, g, r;
-    }
-    pixel;
 
     char Header[54]; //Cabecera que contiene tipo de archivo y bits de la imágen
 
@@ -24,99 +18,120 @@ void FileManager::_ToGreyColour(string path, string savePath)
     ifstream in; //BMP en color
     ofstream out; //BMP blanco y negro
 
-        //Abrir imágenes
-        in.open(path, ios::in | ios::binary);
-        out.open(savePath, ios::out | ios::binary);
+    //Abrir imágenes
+    in.open(path, ios::in | ios::binary);
+    out.open(savePath, ios::out | ios::binary);
 
-        //Copiar cabecera
-        in.read((char *)(&Header), sizeof(Header));
-        out.write((char *)(&Header), sizeof(Header));
+    //Copiar cabecera
+    in.read((char*)(&Header), sizeof(Header));
+    out.write((char*)(&Header), sizeof(Header));
 
-        //Usamos la funcion seekg para ir a la posicion de offset del
-        //bmp 18 que es el width en pixeles de la imagen
-        in.seekg(0x0012);
-        in.read((char *)&width, 4);
+    //Usamos la funcion seekg para ir a la posicion de offset del
+    //bmp 18 que es el width en pixeles de la imagen
+    in.seekg(0x0012);
+    in.read((char*)&width, 4);
+    in.read((char*)&height, 4);
 
-        //Ahora vamos a la posicion del height
-        in.seekg(0x0016);
-        in.read((char *)&height, 4);
+    //Ahora nos posicionamos de la tabla de colores
+    in.seekg(0x0036);
 
-        //Ahora nos posicionamos de la tabla de colores
-        in.seekg(0x0036);
-
-        //Mientras no llegue al final
-        while (!in.eof()) {
-            in.read((char *)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
-            char grayColor = (pixel.b, pixel.g, pixel.r); //Variable que establece el color en 8 bits
-            out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
-        }
-        in.close();
-        out.close();
-        timeToFinish = timer.elapsed();
+    //Mientras no llegue al final
+    while (!in.eof()) {
+        in.read((char*)(&pixel), sizeof(pixel)); //Lee la composición del color (r, g, b)
+        char grayColor = (pixel.b, pixel.g, pixel.r); //Variable que establece el color en 8 bits
+        out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
+    }
+    in.close();
+    out.close();
+    timeToFinish = timer.elapsed();
 }
 
 void FileManager::_MultiThreadToGreyColour(string path, string savePath)
 {
-    QElapsedTimer timer;
     timer.start();
 
-    char Header[54]; //Cabecera que contiene tipo de archivo y bits de la imágen
+    Read(path);
+    std::thread t1(static_toGrey, this);
+    std::thread t2(static_toGrey2, this);
+    std::thread t3(static_toGrey3, this);
+    std::thread t4(static_toGrey4, this);
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+    CreateFile(savePath);
 
-
-
-        //Abrir imágenes
-        in.open(path, ios::in | ios::binary);
-        out.open(savePath, ios::out | ios::binary);
-
-        //Copiar cabecera
-        in.read((char *)(&Header), sizeof(Header));
-        out.write((char *)(&Header), sizeof(Header));
-
-        //Usamos la funcion seekg para ir a la posicion de offset del
-        //bmp 12 que es el width en pixeles de la imagen y en la siguiente esta el heigth
-        in.seekg(0x0012);
-        in.read((char *)&width, 4);
-        in.read((char *)&height, 4);
-        TotalPixel = width * height;
-
-        //Calculo los pixeles de la imagen
-        int offsets = TotalPixel * 3;
-
-            //la mitad
-         Mitadidx = offsets /2;
-
-         //
-         std::thread t1(static_primeraParte,this);
-         std::thread t2(static_primeraParte2,this);
-         t1.join();
-         t2.join();
-         in.close();
-         out.close();
-         timeToFinish = timer.elapsed();
+    timeToFinish = timer.elapsed();
 }
-void FileManager::ToGrey(int num) {
 
-    if(num==0) {
+void FileManager::Read(string path)
+{
+    ifstream file(path, std::ios::binary | std::ios::ate);
+    streamsize size = file.tellg();
+    vector<char> buffer(size);
+    file.seekg(0, std::ios::beg);
+    if (file.read(buffer.data(), size)) {
+        /* worked! */
+    }
 
-        //Ahora nos posicionamos de la tabla de colores
-        in.seekg(0x0036);
-        while(in.tellg() >= 0x0036 && in.tellg() <= Mitadidx)
+    bufferSize = buffer.size();
+    buffer2 = buffer;
+
+    file.close();
+}
+
+char FileManager::grey(unsigned char g, unsigned char b, unsigned char r)
+{
+    return 0.72 * g + 0.07 * b + 0.21 * r;
+}
+
+void FileManager::Write(int offset)
+{
+    char grayColor = grey(buffer2[offset], buffer2[offset + 1], buffer2[offset + 2]);
+    buffer2[offset++] = grayColor;
+    buffer2[offset++] = grayColor;
+    buffer2[offset++] = grayColor;
+}
+
+void FileManager::CreateFile(string savePath)
+{
+    out.open(savePath, ios::out | ios::binary);
+    for (int i = 0; i < bufferSize; i++) {
+        out << buffer2[i];
+    }
+    out.close();
+}
+
+void FileManager::ToGray(int num)
+{
+    if (num == 0) {
+        int offset = 54; // 54 para ignorar Header
+        while (offset < bufferSize / 4) { // mientras offset sea menor a la mitad del archivo
+            Write(offset);
+            offset += 3;
+        }
+    }
+    else if(num == 1)
+    {
+        int offset = bufferSize / 4; // asignar offset a la mitad del archivo
+        while (offset < bufferSize / 3)
         {
-           in.read((char*)(&pixel), sizeof(pixel)); // Hacemos un read en el puntero que hemos indicado anteriormente con el puntero de pixel y
-                                                    // el tamaño a extraer en caracteres que es el sizeofpixel
-
-           char grayColor = (pixel.b, pixel.g, pixel.r); //Establece el color en 8 bits
-           out << grayColor << grayColor << grayColor; //Asigna el nuevo color a r, g, b
+            Write(offset);
+            offset += 3;
+        }
+    } else if(num == 2) {
+        int offset = bufferSize / 3; // asignar offset a la mitad del archivo
+        while (offset < bufferSize / 2)
+        {
+            Write(offset);
+            offset += 3;
         }
     } else {
-
-        //ponemos la posicion del proximo caracter que es la mitad del total de pixeles.
-        in.seekg(Mitadidx);
-        while (!in.eof()){
-           in.read((char*)(&pixel), sizeof(pixel));
-           char grayColor = (pixel.b, pixel.g, pixel.r);
-           out << grayColor << grayColor << grayColor;
+        int offset = bufferSize / 2; // asignar offset a la mitad del archivo
+        while (offset < bufferSize)
+        {
+            Write(offset);
+            offset += 3;
         }
-    } // END If
-
+    }
 }
